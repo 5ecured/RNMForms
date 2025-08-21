@@ -1,15 +1,20 @@
 import { View, Text, TextInput, StyleSheet, StyleProp, ViewStyle } from 'react-native'
 import React, { ComponentProps } from 'react'
+import { useController } from 'react-hook-form'
 
 type CustomTextInput = {
     label?: string,
-    containerStyle?: StyleProp<ViewStyle>
+    containerStyle?: StyleProp<ViewStyle>,
+    name: string
 } & ComponentProps<typeof TextInput> // 1. This is to extend/inherit all the props of TextInput
 
 // 2. textInputProps is basically all the props that belong to TextInput. If a prop does not
 // belong to TextInput, then specify it individually, like label and containerStyle
-const CustomTextInput = ({ label, containerStyle, ...textInputProps }: CustomTextInput) => {
-    const error = undefined
+const CustomTextInput = ({ label, containerStyle, name, ...textInputProps }: CustomTextInput) => {
+    const {
+        field: { value, onBlur, onChange },
+        fieldState: { error }
+    } = useController({ name })
 
     return (
         <View style={containerStyle}>
@@ -17,6 +22,10 @@ const CustomTextInput = ({ label, containerStyle, ...textInputProps }: CustomTex
             <TextInput
                 // 3. And put them here
                 {...textInputProps}
+
+                value={value}
+                onBlur={onBlur}
+                onChangeText={onChange}
                 style={[
                     styles.input,
                     textInputProps.style,
