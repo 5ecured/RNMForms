@@ -6,7 +6,8 @@ type CustomTextInput = {
     containerStyle?: StyleProp<ViewStyle>
 } & ComponentProps<typeof TextInput> // 1. This is to extend/inherit all the props of TextInput
 
-// 2. Then take all the props
+// 2. textInputProps is basically all the props that belong to TextInput. If a prop does not
+// belong to TextInput, then specify it individually, like label and containerStyle
 const CustomTextInput = ({ label, containerStyle, ...textInputProps }: CustomTextInput) => {
     const error = undefined
 

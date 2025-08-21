@@ -1,8 +1,10 @@
-import { View, Text, StyleSheet, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
 import React, { useState } from 'react'
 import { router, Stack } from 'expo-router'
 import CustomButton from '../../components/CustomButton'
 import CustomTextInput from '../../components/CustomTextInput'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import KeyboardAwareScrollView from '../../components/KeyboardAwareScrollView'
 
 const PersonalDetailsForm = () => {
     const [fullname, setFullname] = useState<string>('')
@@ -15,7 +17,7 @@ const PersonalDetailsForm = () => {
     }
 
     return (
-        <View style={styles.container}>
+        <KeyboardAwareScrollView>
             <CustomTextInput placeholder='Joe do' label='Full name' />
             <CustomTextInput placeholder='Address' label='Address' />
 
@@ -26,7 +28,7 @@ const PersonalDetailsForm = () => {
 
             <CustomTextInput placeholder='671491384' label='Phone number' inputMode='tel' />
             <CustomButton title='Next' style={styles.button} onPress={onNext} />
-        </View>
+        </KeyboardAwareScrollView>
     )
 }
 
@@ -35,12 +37,11 @@ export default PersonalDetailsForm
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        flex: 1,
+        flexGrow: 1,
         padding: 10,
         gap: 5
     },
     button: {
         marginTop: 'auto',
-        marginBottom: 25
     }
 })
