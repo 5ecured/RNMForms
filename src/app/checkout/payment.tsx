@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import React from 'react'
 import CustomButton from '../../components/CustomButton'
 import { router } from 'expo-router'
@@ -6,27 +6,20 @@ import KeyboardAwareScrollView from '../../components/KeyboardAwareScrollView'
 import CustomTextInput from '../../components/CustomTextInput'
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
+import { PaymentInfo, PaymentInfoSchema, useCheckoutForm } from '../../contexts/CheckoutFormProvider'
 
-// 1. For Zod validation, first define the schema and pass it to the useForm below
-const PaymentInfoSchema = z.object({
-  cardNumber: z.string().length(16),
-  expireDate: z.string().regex(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/, 'Please use the MM/YY format'),
-  cvv: z.coerce.number().min(100).max(999)
-})
-
-// 2. Create the type to be passed to useForm and to onNext
-type PaymentInfo = z.infer<typeof PaymentInfoSchema>
 
 const PaymentDetailsForm = () => {
+  const { setPaymentInfo, paymentInfo } = useCheckoutForm()
+
   const form = useForm<PaymentInfo>({
-    resolver: zodResolver(PaymentInfoSchema)
+    resolver: zodResolver(PaymentInfoSchema),
+    defaultValues: paymentInfo
   })
 
-  const onNext: SubmitHandler<PaymentInfo> = (data) => {
-    // validate form
 
-    // then, go next page
+  const onNext: SubmitHandler<PaymentInfo> = (data) => {
+    setPaymentInfo(data)
     router.push('/checkout/confirm')
   }
 

@@ -3,29 +3,14 @@ import React from 'react'
 import CustomButton from '../../components/CustomButton'
 import { Link, router } from 'expo-router'
 import KeyboardAwareScrollView from '../../components/KeyboardAwareScrollView'
+import { useCheckoutForm } from '../../contexts/CheckoutFormProvider'
 
-const personalInfo = {
-  "fullName": "Vadim Savin",
-  "address": "Poblenou",
-  "city": "Barcelona",
-  "postcode": "1234",
-  "phone": "60123123123",
-  "country": "ES"
-}
 
-const paymentInfo = {
-  "cardNumber": "1234123412341234",
-  "expires": "01/30",
-  "cvv": "123"
-}
 
 const ConfirmForm = () => {
+  const { personalInfo, paymentInfo } = useCheckoutForm()
+
   const onNext = () => {
-    // validate form
-
-    // submit data
-
-    // then, redirect next
     router.dismissAll() // This is to return to the first screen in the stack, which is Personal
     router.back() // Then from Personal, we go back, to Home
   }

@@ -1,36 +1,25 @@
-import { View, Text, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
-import React, { useState } from 'react'
-import { router, Stack } from 'expo-router'
+import { View, StyleSheet } from 'react-native'
+import React from 'react'
+import { router } from 'expo-router'
 import CustomButton from '../../components/CustomButton'
 import CustomTextInput from '../../components/CustomTextInput'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import KeyboardAwareScrollView from '../../components/KeyboardAwareScrollView'
-import { useForm, SubmitHandler, Controller, FormProvider } from 'react-hook-form'
+import { useForm, SubmitHandler, FormProvider } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
+import { PersonalInfo, PersonalInfoSchema, useCheckoutForm } from '../../contexts/CheckoutFormProvider'
 
-const PersonalInfoSchema = z.object({
-    fullName: z
-        .string({ message: 'Full name is required!' })
-        .min(1, { message: 'Full name must be longer than 1' }),
-    address: z.string().min(1, { message: 'Please provide your address!' }),
-    city: z.string().min(1, { message: 'City is required!' }),
-    postcode: z.string().min(1, { message: 'Postal code is required!' }),
-    phone: z.string().min(1, { message: 'Phone is required!' }),
-});
-
-type PersonalInfo = z.infer<typeof PersonalInfoSchema>
 
 const PersonalDetailsForm = () => {
+    const { setPersonalInfo, personalInfo } = useCheckoutForm()
+
     const form = useForm<PersonalInfo>({
-        resolver: zodResolver(PersonalInfoSchema)
+        resolver: zodResolver(PersonalInfoSchema),
+        defaultValues: personalInfo
     })
-    console.log(form.formState.errors)
+
 
     const onNext: SubmitHandler<PersonalInfo> = (data) => {
-        // validate form
-        console.log(data)
-        // then, go next page
+        setPersonalInfo(data)
         router.push('/checkout/payment')
     }
 
