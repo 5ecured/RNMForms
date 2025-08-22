@@ -6,12 +6,28 @@ import CustomTextInput from '../../components/CustomTextInput'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import KeyboardAwareScrollView from '../../components/KeyboardAwareScrollView'
 import { useForm, SubmitHandler, Controller, FormProvider } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+
+const PersonalInfoSchema = z.object({
+    fullName: z
+        .string({ message: 'Full name is required!' })
+        .min(1, { message: 'Full name must be longer than 1' }),
+    address: z.string().min(1, { message: 'Please provide your address!' }),
+    city: z.string().min(1, { message: 'City is required!' }),
+    postcode: z.string().min(1, { message: 'Postal code is required!' }),
+    phone: z.string().min(1, { message: 'Phone is required!' }),
+});
+
+type PersonalInfo = z.infer<typeof PersonalInfoSchema>
 
 const PersonalDetailsForm = () => {
-    const form = useForm()
+    const form = useForm<PersonalInfo>({
+        resolver: zodResolver(PersonalInfoSchema)
+    })
     console.log(form.formState.errors)
 
-    const onNext: SubmitHandler<any> = (data) => {
+    const onNext: SubmitHandler<PersonalInfo> = (data) => {
         // validate form
         console.log(data)
         // then, go next page
@@ -40,7 +56,7 @@ const PersonalDetailsForm = () => {
                         placeholder='1234'
                         label='Postcode'
                         containerStyle={{ flex: 1 }}
-                        name='postCode'
+                        name='postcode'
                     />
                 </View>
 
@@ -48,7 +64,7 @@ const PersonalDetailsForm = () => {
                     placeholder='671491384'
                     label='Phone number'
                     inputMode='tel'
-                    name='phoneNumber'
+                    name='phone'
                 />
                 <CustomButton title='Next' style={styles.button} onPress={form.handleSubmit(onNext)} />
             </FormProvider>
