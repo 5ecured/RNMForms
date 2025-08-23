@@ -8,12 +8,7 @@ import { useCheckoutForm } from '../../contexts/CheckoutFormProvider'
 
 
 const ConfirmForm = () => {
-  const { personalInfo, paymentInfo } = useCheckoutForm()
-
-  const onNext = () => {
-    router.dismissAll() // This is to return to the first screen in the stack, which is Personal
-    router.back() // Then from Personal, we go back, to Home
-  }
+  const { personalInfo, paymentInfo, onSubmit } = useCheckoutForm()
 
   return (
     <KeyboardAwareScrollView>
@@ -56,7 +51,7 @@ const ConfirmForm = () => {
           </View>
         )}
 
-        <CustomButton title='Submit' style={styles.button} onPress={onNext} />
+        <CustomButton title='Submit' style={styles.button} onPress={onSubmit} />
       </View>
     </KeyboardAwareScrollView>
   )

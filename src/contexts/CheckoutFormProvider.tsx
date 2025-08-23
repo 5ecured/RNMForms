@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import * as z from 'zod'
 
@@ -21,18 +22,22 @@ export const PaymentInfoSchema = z.object({
 
 export type PaymentInfo = z.infer<typeof PaymentInfoSchema>
 
+
+
 type CheckoutFormContext = {
     personalInfo: PersonalInfo | undefined,
     setPersonalInfo: (value: PersonalInfo | undefined) => void,
     paymentInfo: PaymentInfo | undefined,
-    setPaymentInfo: (value: PaymentInfo | undefined) => void
+    setPaymentInfo: (value: PaymentInfo | undefined) => void,
+    onSubmit: () => void
 }
 
 const CheckoutFormContext = createContext<CheckoutFormContext>({
     personalInfo: undefined,
     setPersonalInfo: () => { },
     paymentInfo: undefined,
-    setPaymentInfo: () => { }
+    setPaymentInfo: () => { },
+    onSubmit: () => { }
 })
 
 export default function CheckoutFormProvider({ children }: PropsWithChildren) {
@@ -40,11 +45,26 @@ export default function CheckoutFormProvider({ children }: PropsWithChildren) {
     const [paymentInfo, setPaymentInfo] = useState<PaymentInfo | undefined>()
 
     const onSubmit = () => {
-        
+        if (!personalInfo || !paymentInfo) {
+            console.log('Form is incomplete')
+            return
+        }
+
+        setPersonalInfo(undefined)
+        setPaymentInfo(undefined)
+
+        router.dismissAll() // This is to return to the first screen in the stack, which is Personal
+        router.back() // Then from Personal, we go back, to Home
     }
 
     return (
-        <CheckoutFormContext value={{ personalInfo, setPersonalInfo, paymentInfo, setPaymentInfo }}>
+        <CheckoutFormContext value={{
+            personalInfo,
+            setPersonalInfo,
+            paymentInfo,
+            setPaymentInfo,
+            onSubmit
+        }}>
             {children}
         </CheckoutFormContext>
     )
