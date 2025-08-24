@@ -7,6 +7,8 @@ import KeyboardAwareScrollView from '../../components/KeyboardAwareScrollView'
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PersonalInfo, PersonalInfoSchema, useCheckoutForm } from '../../contexts/CheckoutFormProvider'
+import countries from '../../../assets/countries.json'
+import CustomPicker from '../../components/CustomPicker'
 
 
 const PersonalDetailsForm = () => {
@@ -48,6 +50,15 @@ const PersonalDetailsForm = () => {
                         name='postcode'
                     />
                 </View>
+
+                <CustomPicker
+                    name='country'
+                    placeholder={{ label: 'Select a country' }}
+                    items={countries.map(country => ({
+                        label: country.name,
+                        value: country.code
+                    }))}
+                />
 
                 <CustomTextInput
                     placeholder='671491384'

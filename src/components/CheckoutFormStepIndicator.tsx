@@ -27,11 +27,13 @@ const CheckoutFormStepIndicator = () => {
             edges={['top']}
         >
             {steps.map((step, i) => (
-                <View style={{
-                    borderBottomWidth: 3,
-                    flex: 1,
-                    borderColor: stepIndex >= i ? '#005055' : 'lightgray'
-                }}>
+                <View
+                    key={step.key}
+                    style={{
+                        borderBottomWidth: 3,
+                        flex: 1,
+                        borderColor: stepIndex >= i ? '#005055' : 'lightgray'
+                    }}>
                     <Text style={{
                         fontWeight: 'bold',
                         textAlign: 'center',
