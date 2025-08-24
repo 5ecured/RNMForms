@@ -7,6 +7,8 @@ import CustomTextInput from '../../components/CustomTextInput'
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PaymentInfo, PaymentInfoSchema, useCheckoutForm } from '../../contexts/CheckoutFormProvider'
+import CustomCheckbox from '../../components/CustomCheckbox'
+import CustomSwitch from '../../components/CustomSwitch'
 
 
 const PaymentDetailsForm = () => {
@@ -46,6 +48,16 @@ const PaymentDetailsForm = () => {
             inputMode='numeric'
           />
         </View>
+
+        <CustomCheckbox
+          label='Save credit card'
+          name='saveCard'
+        />
+        <CustomSwitch
+          name='switchValue'
+          label='On or off?'
+        />
+
         <CustomButton title='Next' style={styles.button} onPress={form.handleSubmit(onNext)} />
       </FormProvider>
     </KeyboardAwareScrollView>
