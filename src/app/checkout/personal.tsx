@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { PersonalInfo, PersonalInfoSchema, useCheckoutForm } from '../../contexts/CheckoutFormProvider'
 import countries from '../../../assets/countries.json'
 import CustomPicker from '../../components/CustomPicker'
+import CustomDateTimePicker from '../../components/CustomDateTimePicker'
 
 
 const PersonalDetailsForm = () => {
@@ -66,6 +67,11 @@ const PersonalDetailsForm = () => {
                     inputMode='tel'
                     name='phone'
                 />
+
+                <CustomDateTimePicker
+                    name='birthdate'
+                />
+
                 <CustomButton title='Next' style={styles.button} onPress={form.handleSubmit(onNext)} />
             </FormProvider>
         </KeyboardAwareScrollView>
